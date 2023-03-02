@@ -1,18 +1,18 @@
 package com.example.gradingsystem.entities;
-import com.example.gradingsystem.DTOs.AdminDTO;
+
+import com.example.gradingsystem.DTOs.LessonDTO;
 import com.example.gradingsystem.DTOs.StudentDTO;
-import com.example.gradingsystem.enums.Role;
-import com.example.gradingsystem.enums.RoleConverter;
+import com.example.gradingsystem.enums.*;
 import com.example.gradingsystem.exceptions.NullRobucksException;
 import com.example.gradingsystem.exceptions.RobucksExceededException;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +34,22 @@ public class Student {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "study_status")
+    @Convert(converter = StudyStatusConverter.class)
+    private StudyStatus studyStatus;
+
+    @Column(name = "place_of_study")
+    private String placeOfStudy;
+
+    @Column(name = "parent_name")
+    private String parentName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -48,6 +64,13 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group groupID;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "student_lesson",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id"))
+    private List<Lesson> participatedLessons;
 
 
     public void addRobucks(int robucksToAdd) {
@@ -86,14 +109,25 @@ public class Student {
     }
 
     public StudentDTO toDto() {
+
+        List<LessonDTO> participatedLessons = List.of();
+        if (this.participatedLessons != null)
+            participatedLessons = this.participatedLessons.stream().map(Lesson::toDto).toList();
+
         return new StudentDTO(
                 this.id,
                 this.name,
                 this.surname,
+                this.age,
+                this.studyStatus,
+                this.placeOfStudy,
+                this.parentName,
+                this.phoneNumber,
                 user,
                 this.role,
                 this.robucks,
-                groupID
+                groupID,
+                participatedLessons
         );
     }
 }

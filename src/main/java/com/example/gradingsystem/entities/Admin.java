@@ -1,7 +1,6 @@
 package com.example.gradingsystem.entities;
 
 import com.example.gradingsystem.DTOs.AdminDTO;
-import com.example.gradingsystem.DTOs.StudentDTO;
 import com.example.gradingsystem.enums.Role;
 import com.example.gradingsystem.enums.RoleConverter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;

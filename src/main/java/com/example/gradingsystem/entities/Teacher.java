@@ -46,6 +46,11 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<Group> groups = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "teacher")
+//    private List<Lesson> lessons = new ArrayList<>();
+
+
+
     public TeacherDTO toDto() {
 
         List<GroupDTO> groups = List.of();

@@ -1,7 +1,6 @@
 package com.example.gradingsystem.controllers;
 import com.example.gradingsystem.entities.Group;
 import com.example.gradingsystem.entities.Student;
-import com.example.gradingsystem.entities.Teacher;
 import com.example.gradingsystem.services.group.GroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

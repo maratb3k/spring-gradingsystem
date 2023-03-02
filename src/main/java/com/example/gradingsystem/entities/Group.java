@@ -1,16 +1,13 @@
 package com.example.gradingsystem.entities;
 
 import com.example.gradingsystem.DTOs.GroupDTO;
+import com.example.gradingsystem.DTOs.LessonDTO;
 import com.example.gradingsystem.DTOs.StudentDTO;
-import com.example.gradingsystem.DTOs.TeacherDTO;
 import com.example.gradingsystem.enums.DayConverter;
-import com.example.gradingsystem.enums.RoleConverter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -52,10 +49,18 @@ public class Group {
     @OneToMany(mappedBy = "groupID")
     private List<Student> students;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "group_id")
+    private List<Lesson> lessons;
+
     public GroupDTO toDto() {
         List<StudentDTO> students = List.of();
         if (this.students != null)
             students = this.students.stream().map(Student::toDto).toList();
+
+        List<LessonDTO> lessons = List.of();
+        if (this.students != null)
+            lessons = this.lessons.stream().map(Lesson::toDto).toList();
 
         return new GroupDTO(
                 this.id,
@@ -63,7 +68,8 @@ public class Group {
                 this.dayOfWeek,
                 this.groupTime,
                 teacher,
-                students
+                students,
+                lessons
         );
     }
 }
