@@ -13,5 +13,7 @@ import java.util.List;
 public class SubjectDTO {
     private int id;
     private String name;
+    private Integer lessonFeePerStudent;
     private List<GroupDTO> groups;
+    private List<LessonDTO> lessons;
 }

@@ -3,6 +3,8 @@ import com.example.gradingsystem.entities.Group;
 import com.example.gradingsystem.entities.Teacher;
 import com.example.gradingsystem.services.teacher.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,4 +65,13 @@ public class TeacherController {
         return teacherService.getGroupList(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
+    @GetMapping("{teacherId}/salary/subject/{subjectId}/month/{month}/year/{year}/")
+    public ResponseEntity<Double> getTeacherSalary(@PathVariable("teacherId") int teacherId,
+                                                   @PathVariable("subjectId") int subjectId,
+                                                   @PathVariable("month") int month,
+                                                   @PathVariable("year") int year) {
+        Double salary = teacherService.calculateSalary(teacherId, subjectId, month, year);
+        return new ResponseEntity<>(salary, HttpStatus.OK);
+    }
 }

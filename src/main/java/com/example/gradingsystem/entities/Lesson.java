@@ -26,7 +26,7 @@ public class Lesson {
     @Column(name = "id")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private Teacher teacher;
 
@@ -50,6 +50,10 @@ public class Lesson {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> studentAttendance;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
+
     public LessonDTO toDto() {
         List<StudentDTO> studentAttendance = List.of();
         if (this.studentAttendance != null)
@@ -62,7 +66,8 @@ public class Lesson {
                 this.homework,
                 group_id,
                 studentAttendance,
-                this.lessonDate
+                this.lessonDate,
+                subject
         );
     }
 }

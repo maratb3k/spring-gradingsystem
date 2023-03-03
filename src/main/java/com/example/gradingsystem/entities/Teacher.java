@@ -1,5 +1,6 @@
 package com.example.gradingsystem.entities;
 import com.example.gradingsystem.DTOs.GroupDTO;
+import com.example.gradingsystem.DTOs.LessonDTO;
 import com.example.gradingsystem.DTOs.TeacherDTO;
 import com.example.gradingsystem.enums.Role;
 import com.example.gradingsystem.enums.RoleConverter;
@@ -46,10 +47,11 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<Group> groups = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "teacher")
-//    private List<Lesson> lessons = new ArrayList<>();
+//    @Column(name = "salary")
+//    private Integer salary;
 
-
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Lesson> lessonsTaught = new ArrayList<>();
 
     public TeacherDTO toDto() {
 
@@ -57,13 +59,18 @@ public class Teacher {
         if (this.groups != null)
             groups = this.groups.stream().map(Group::toDto).toList();
 
+        List<LessonDTO> lessonsTaught = List.of();
+        if (this.lessonsTaught != null)
+            lessonsTaught = this.lessonsTaught.stream().map(Lesson::toDto).toList();
+
         return new TeacherDTO(
                 this.id,
                 this.name,
                 this.surname,
                 user,
                 this.role,
-                groups
+                groups,
+                lessonsTaught
         );
     }
 }

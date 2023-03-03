@@ -1,6 +1,7 @@
 package com.example.gradingsystem.DTOs;
 
 import com.example.gradingsystem.entities.Group;
+import com.example.gradingsystem.entities.Subject;
 import com.example.gradingsystem.entities.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +23,5 @@ public class LessonDTO {
     private Group group_id;
     private List<StudentDTO> studentAttendance;
     private LocalDateTime lessonDate;
+    private Subject subject;
 }
