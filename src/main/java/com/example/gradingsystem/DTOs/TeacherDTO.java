@@ -19,4 +19,5 @@ public class TeacherDTO {
     private Role role;
     private List<GroupDTO> groups;
     private List<LessonDTO> lessonsTaught;
+    private List<TaskDTO> tasks;
 }
